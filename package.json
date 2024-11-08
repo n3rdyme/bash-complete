@@ -23,5 +23,13 @@
   "scripts": {
     "setup": "./install.sh"
   },
-  "devDependencies": {}
+  "files": [
+    ".bash-complete-update.cjs",
+    ".bash-complete.sh",
+    "README.md",
+    "install.cjs",
+    "install.sh",
+    "package.json"
+  ],
+  "dependencies": {}
 }

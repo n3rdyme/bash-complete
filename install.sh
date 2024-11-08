@@ -1,6 +1,11 @@
 #!/bin/bash
 # .install.sh: Installer script for bash-complete setup
 
+set -e
+
+# Get the directory of the current script to locate .bash-complete-update.cjs
+SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+
 # Variables
 HOME_DIR="$HOME"
 BASH_COMPLETE_JSON="$HOME_DIR/.bash-complete.json"
@@ -41,8 +46,8 @@ copy_file() {
 }
 
 # Copy files to the user's home directory
-copy_file "./.bash-complete.sh" "$BASH_COMPLETE_SH"
-copy_file "./.bash-complete-update.cjs" "$BASH_COMPLETE_UPDATE_CJS"
+copy_file "$SCRIPT_DIR/.bash-complete.sh" "$BASH_COMPLETE_SH"
+copy_file "$SCRIPT_DIR/.bash-complete-update.cjs" "$BASH_COMPLETE_UPDATE_CJS"
 
 # Create .bash-complete.json if it doesn't exist, with default content '{}'
 if [[ ! -e "$BASH_COMPLETE_JSON" ]]; then
