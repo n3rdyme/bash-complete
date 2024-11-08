@@ -35,6 +35,9 @@ function updateCommandTree(tree, cwd, args) {
 
   for (const arg of args) {
     if (!currentNode[arg]) {
+      if (arg.includes(" ")) {
+        break;
+      }
       currentNode[arg] = {};
       isModified = true; // Mark as modified if a new entry is added
     }
@@ -60,19 +63,17 @@ function populateCommandTree(tree, cwd, args) {
     path.join(cwd, "package.json"),
     args
   );
-  // Add root "internal" yarn commands
-  let help = execFileSync("yarn", ["--help"], { encoding: "utf8" });
-  help = help
-    .slice(help.indexOf("Commands:") + 10)
-    .split("\n")
-    .map((line) => line.trim())
-    .filter(
-      (line) =>
-        line?.startsWith("- ") ||
-        line?.replace(/\x1B\[[0-9;]*[mK]/g, "").startsWith("yarn ")
-    )
-    .map((line) => line.split(" ")[1]);
-
+  // Add just the common root "internal" yarn commands
+  let help = [
+    "add",
+    "install",
+    "remove",
+    "upgrade",
+    "upgrade-interactive",
+    "version",
+    "workspace",
+    "workspaces",
+  ];
   help.forEach((script) => updateCommandTree(tree, cwd, [...args, script]));
 
   // Discover workspaces
