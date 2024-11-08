@@ -82,34 +82,41 @@ function populateCommandTree(tree, cwd, args) {
       encoding: "utf8",
     });
     const version = versionText.includes("1.") ? 1 : 2;
-    // Get the workspaces
-    const wkspArg =
-      version === 1 ? ["workspaces", "info"] : ["workspaces", "list", "--json"];
-    let workspaces = execFileSync("yarn", wkspArg, { encoding: "utf8" });
-    if (version === 1) {
-      const ixStartJson = workspaces.indexOf("{");
-      const ixEndJson = workspaces.lastIndexOf("}");
-      workspaces = workspaces.slice(ixStartJson, ixEndJson + 1);
-      workspaces = JSON.parse(workspaces);
-    } else {
-      workspaces = JSON.parse(
-        `[${workspaces.split("\n").filter(Boolean).join(",")}]`
-      )
-        .filter(({ location }) => location !== ".")
-        .reduce((acc, { name, location }) => {
-          acc[name] = { location };
-          return acc;
-        }, {});
+    try {
+      // Get the workspaces
+      const wkspArg =
+        version === 1
+          ? ["workspaces", "info"]
+          : ["workspaces", "list", "--json"];
 
-      // Add workspace scripts
-      for (const [name, { location }] of Object.entries(workspaces)) {
-        addScriptsFromPackageJson(
-          tree,
-          cwd,
-          path.join(cwd, location, "package.json"),
-          [...args, "workspace", name]
-        );
+      let workspaces = execFileSync("yarn", wkspArg, { encoding: "utf8" });
+      if (version === 1) {
+        const ixStartJson = workspaces.indexOf("{");
+        const ixEndJson = workspaces.lastIndexOf("}");
+        workspaces = workspaces.slice(ixStartJson, ixEndJson + 1);
+        workspaces = JSON.parse(workspaces);
+      } else {
+        workspaces = JSON.parse(
+          `[${workspaces.split("\n").filter(Boolean).join(",")}]`
+        )
+          .filter(({ location }) => location !== ".")
+          .reduce((acc, { name, location }) => {
+            acc[name] = { location };
+            return acc;
+          }, {});
       }
+    } catch (e) {
+      workspaces = {};
+    }
+
+    // Add workspace scripts
+    for (const [name, { location }] of Object.entries(workspaces)) {
+      addScriptsFromPackageJson(
+        tree,
+        cwd,
+        path.join(cwd, location, "package.json"),
+        [...args, "workspace", name]
+      );
     }
   }
 }
