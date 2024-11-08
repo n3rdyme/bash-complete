@@ -36,14 +36,18 @@ Once installed, open a new terminal session to start using Bash Complete.
 
 After installation, you can use Bash Complete for autocompletion with `yarn` (or any command specified in the `SUPPORTED_COMMANDS` array).
 
-- **Autocompletion**: Start typing a supported command, followed by a partial command or subcommand, and press `Tab` to see autocomplete suggestions. For example:
+- **Autocompletion**: The system records and suggests commands that you have previously run in this directory. Start typing a known command, followed by a partial command or subcommand, and press `Tab` to see autocomplete suggestions. For example:
 
   ```bash
-  yarn workspace @local/package <Tab><Tab>
-  build
+  yarn build
+  yarn b <Tab>
   ```
 
-- **Automatic Command Logging**: Run `yarn --auto` to automatically populate the autocompletion data for the current directory’s `package.json` scripts, as well as workspaces and their scripts. This will capture available commands and subcommands and store them in `.bash-complete.json` for the current project directory and any workspaces it contains.
+- **💡 Automatic Command Logging**: Run `yarn --auto` to automatically populate the autocompletion data for the current directory’s `package.json` scripts, as well as workspaces and their scripts.
+  ```bash
+  yarn --auto
+  ```
+  This will auto-discover available commands and subcommands and store them in `.bash-complete.json` for the current project directory and any workspaces it contains.
 
 ---
 

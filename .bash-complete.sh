@@ -16,7 +16,7 @@ _bashcomplete_override() {
   local full_command=("$cmd_name" "$@")
   local cwd="$(pwd)"
 
-  if [[ "$1" == "auto" ]]; then
+  if [[ "$1" == "--auto" ]]; then
     node "$SCRIPT_DIR/.bash-complete-update.cjs" "$cmd_name" --auto
     return 0
   fi
