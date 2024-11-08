@@ -18,10 +18,10 @@
     "ai"
   ],
   "bin": {
-    "bash-complete": "./install.sh"
+    "bash-complete": "./install.cjs"
   },
   "scripts": {
-    "setup": "./install.sh"
+    "setup": "./install.cjs"
   },
   "files": [
     ".bash-complete-update.cjs",
