@@ -1,0 +1,27 @@
+{
+  "name": "bash-complete",
+  "version": "0.0.1",
+  "description": "Shell script for auto-complete of bash commands that are context/directory specific",
+  "main": "install.cjs",
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "shell",
+    "bash",
+    "yarn",
+    "npm",
+    "command",
+    "auto",
+    "complete",
+    "autocomplete",
+    "learning",
+    "ai"
+  ],
+  "bin": {
+    "bash-complete": "./install.sh"
+  },
+  "scripts": {
+    "setup": "./install.sh"
+  },
+  "devDependencies": {}
+}
