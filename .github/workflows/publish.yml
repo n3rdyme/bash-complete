@@ -1,0 +1,48 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Ensure full history for version bump commit
+
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22" # Use the Node.js version your package requires
+          registry-url: "https://registry.npmjs.org"
+
+      # Install dependencies with Yarn
+      - name: Install dependencies
+        run: yarn install
+
+      # Bump the version automatically using Yarn
+      - name: Bump version
+        run: yarn version --patch --no-git-tag-version
+
+      # Commit the version bump
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore: bump version to $(node -p "require('./package.json').version")"
+          git push origin main
+
+      # Publish to npm
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish
