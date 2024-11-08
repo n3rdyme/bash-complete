@@ -82,6 +82,7 @@ function populateCommandTree(tree, cwd, args) {
       encoding: "utf8",
     });
     const version = versionText.includes("1.") ? 1 : 2;
+    let workspaces = {};
     try {
       // Get the workspaces
       const wkspArg =
@@ -89,7 +90,7 @@ function populateCommandTree(tree, cwd, args) {
           ? ["workspaces", "info"]
           : ["workspaces", "list", "--json"];
 
-      let workspaces = execFileSync("yarn", wkspArg, { encoding: "utf8" });
+      workspaces = execFileSync("yarn", wkspArg, { encoding: "utf8" });
       if (version === 1) {
         const ixStartJson = workspaces.indexOf("{");
         const ixEndJson = workspaces.lastIndexOf("}");
