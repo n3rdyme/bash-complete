@@ -11,7 +11,6 @@ HOME_DIR="$HOME"
 BASH_COMPLETE_JSON="$HOME_DIR/.bash-complete.json"
 BASH_COMPLETE_UPDATE_CJS="$HOME_DIR/.bash-complete-update.cjs"
 BASH_COMPLETE_SH="$HOME_DIR/.bash-complete.sh"
-BASHRC_PATH="$HOME_DIR/.bashrc"
 BASHRC_ENTRY="
 # bash-complete setup
 source ~/.bash-complete.sh
@@ -55,10 +54,26 @@ if [[ ! -e "$BASH_COMPLETE_JSON" ]]; then
   echo "{}" > "$BASH_COMPLETE_JSON"
 fi
 
-# Update .bashrc only if it doesn't already include bash-complete setup
-if ! grep -q "bash-complete" "$BASHRC_PATH"; then
-  echo "Updating $BASHRC_PATH to include bash-complete setup..."
-  echo "$BASHRC_ENTRY" >> "$BASHRC_PATH"
+# Determine the correct shell configuration file to modify
+if [[ "$SHELL" == *"zsh"* ]]; then
+  SHELL_CONFIG="$HOME_DIR/.zshrc"
+elif [[ "$SHELL" == *"bash"* ]]; then
+  if [[ -f "$HOME_DIR/.bash_profile" ]]; then
+    SHELL_CONFIG="$HOME_DIR/.bash_profile"
+  else
+    SHELL_CONFIG="$HOME_DIR/.bashrc"
+  fi
+fi
+
+# Update the shell config file only if it doesn't already include bash-complete setup
+if [[ -n "$SHELL_CONFIG" ]]; then
+  if ! grep -q "bash-complete" "$SHELL_CONFIG"; then
+    echo "Updating $SHELL_CONFIG to include bash-complete setup..."
+    echo "$BASHRC_ENTRY" >> "$SHELL_CONFIG"
+    echo "Updated $SHELL_CONFIG to include bash-complete setup."
+  fi
+else
+  echo "No supported shell configuration file found. Please add 'source ~/.bash-complete.sh' to your shell's config file manually."
 fi
 
 # Done
