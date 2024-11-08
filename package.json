@@ -1,21 +1,31 @@
 {
   "name": "bash-complete",
   "version": "0.0.1",
-  "description": "Shell script for auto-complete of bash commands that are context/directory specific",
+  "description": "Shell script for auto-complete of bash commands that are context/directory specific, ex: yarn workspace <tab> to list workspaces",
   "main": "install.cjs",
-  "author": "",
+  "author": "n3rdy.me",
   "license": "MIT",
+  "homepage": "https://github.com/n3rdyme/bash-complete#readme",
+  "bugs": {
+    "url": "https://github.com/n3rdyme/bash-complete/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/n3rdyme/bash-complete"
+  },
   "keywords": [
     "shell",
     "bash",
     "yarn",
+    "workspace",
+    "workspaces",
     "npm",
+    "scripts",
     "command",
     "auto",
     "complete",
     "autocomplete",
-    "learning",
-    "ai"
+    "learning"
   ],
   "bin": {
     "bash-complete": "./install.cjs"
