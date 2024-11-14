@@ -5,7 +5,13 @@
 SUPPORTED_COMMANDS=("yarn")
 
 # Get the directory of the current script to locate .bash-complete-update.cjs
-SCRIPT_DIR="$(dirname "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+# Check if we're in Bash or Zsh
+if [[ -n "$BASH_SOURCE" ]]; then
+  # For Bash: Use BASH_SOURCE to get the script path
+  SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
 
 # Function to override supported commands and log them with .bash-complete-update.cjs
 _bashcomplete_override() {
